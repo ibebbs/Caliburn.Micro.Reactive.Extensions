@@ -1,0 +1,8 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/Caliburn.Micro.Reactive.Extensions/bin/Debug
+/packages
+/Caliburn.Micro.Reactive.Extensions/obj/Debug
+*.suo
