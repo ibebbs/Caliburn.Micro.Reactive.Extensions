@@ -89,7 +89,14 @@ The ObservableProperty class is  much like a dependency property. It is declared
 
 The ObservableCommand class implements ICommand and can therefore be bound directly to controls in the UI. It takes an IObservable<bool> as a constructor parameter which it uses to determine whether the command is currently enabled or not (no need for nasty 'NotifyCanxecuteHasChanged' methods). It exposes an IObservable<object> that emits a value (the command parameter value) when the command is executed. Alternatively, an Action<object> can be specified in the constructor which will also be called whenever the command is executed.
 
-### ObservableEvent
+### ObservableEvents
+
+ObservableEvents is a collection of extension methods for exposing Caliburn / WPF events as observable sequences. For example 'FromPropertyChanged' maps the PropertyChangedEvent from any class implementing INotifyPropertyChanged to an IObservable<PropertyChangedEventArgs>'.
+
+## Todo
+
+* Tests!
+* Exposing Conductor / Screen events as Observable sequences
 
 ## Packages And Symbols
 
