@@ -6,3 +6,5 @@
 /packages
 /Caliburn.Micro.Reactive.Extensions/obj/Debug
 *.suo
+/Caliburn.Micro.Reactive.Extensions.Example/bin/Debug
+/Caliburn.Micro.Reactive.Extensions.Example/obj/Debug

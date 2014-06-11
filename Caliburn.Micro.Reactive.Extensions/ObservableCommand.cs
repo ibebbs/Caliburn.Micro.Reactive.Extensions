@@ -20,6 +20,8 @@ namespace Caliburn.Micro.Reactive.Extensions
             _canExecuteSubscription = canExecute.DistinctUntilChanged().Subscribe(OnCanExecuteChanged);
         }
 
+        public ObservableCommand() : this(Observable.Return<bool>(true)) { }
+
         public void Dispose()
         {
             if (_canExecuteSubscription != null)
