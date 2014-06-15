@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Windows.Input;
@@ -20,7 +21,14 @@ namespace Caliburn.Micro.Reactive.Extensions
             _canExecuteSubscription = canExecute.DistinctUntilChanged().Subscribe(OnCanExecuteChanged);
         }
 
+        public ObservableCommand(IObservable<bool> canExecute, Action<object> execute) : this(canExecute)
+        {
+            _invocations.Subscribe(execute);
+        }
+
         public ObservableCommand() : this(Observable.Return<bool>(true)) { }
+
+        public ObservableCommand(Action<object> execute) : this(Observable.Return<bool>(true), execute) { }
 
         public void Dispose()
         {
