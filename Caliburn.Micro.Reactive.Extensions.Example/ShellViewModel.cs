@@ -20,13 +20,13 @@ namespace Caliburn.Micro.Reactive.Extensions.Example
             _logInCommand = new ObservableCommand(CanLogIn);
             _cancelCommand = new ObservableCommand();
 
-            _logInCommand.Invocations.Subscribe(ExecuteLogIn);
-            _cancelCommand.Invocations.Subscribe(ExecuteCancel);
+            _logInCommand.Subscribe(ExecuteLogIn);
+            _cancelCommand.Subscribe(ExecuteCancel);
         }
 
         private IObservable<bool> CanLogIn
         {
-            get { return _username.Values.CombineLatest(_password.Values, (username, password) => !string.IsNullOrWhiteSpace(username) && !string.IsNullOrWhiteSpace(password)); }
+            get { return _username.CombineLatest(_password, (username, password) => !string.IsNullOrWhiteSpace(username) && !string.IsNullOrWhiteSpace(password)); }
         }
 
         private void ExecuteLogIn(object param)

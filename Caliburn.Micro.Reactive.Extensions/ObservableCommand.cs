@@ -5,7 +5,7 @@ using System.Windows.Input;
 
 namespace Caliburn.Micro.Reactive.Extensions
 {
-    public class ObservableCommand : ICommand, IDisposable
+    public class ObservableCommand : ICommand, IDisposable, IObservable<object>
     {
         private Subject<object> _invocations;
 
@@ -21,6 +21,11 @@ namespace Caliburn.Micro.Reactive.Extensions
         }
 
         public ObservableCommand() : this(Observable.Return<bool>(true)) { }
+
+        IDisposable IObservable<object>.Subscribe(IObserver<object> observer)
+        {
+            return _invocations.Subscribe(observer);
+        }
 
         public void Dispose()
         {
@@ -55,11 +60,6 @@ namespace Caliburn.Micro.Reactive.Extensions
         public void Execute(object parameter)
         {
             _invocations.OnNext(parameter);
-        }
-
-        public IObservable<object> Invocations
-        {
-            get { return _invocations; }
         }
     }
 }

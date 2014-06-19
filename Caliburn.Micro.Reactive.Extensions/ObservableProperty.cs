@@ -5,16 +5,16 @@ using System.Reactive.Subjects;
 
 namespace Caliburn.Micro.Reactive.Extensions
 {
-    public class ObservableProperty<TValue>
+    public class ObservableProperty<TValue> : IObservable<TValue>, IObserver<TValue>
     {
         private TValue _current;
-        private Subject<TValue> _values;
+        private BehaviorSubject<TValue> _values;
         private IDisposable _notifySubscription;
 
         public ObservableProperty(TValue defaultValue, INotifyPropertyChangedEx notifier, string propertyName)
         {
             _current = defaultValue;
-            _values = new Subject<TValue>();
+            _values = new BehaviorSubject<TValue>(defaultValue);
 
             _notifySubscription = _values.DistinctUntilChanged().Do(value => _current = value).Subscribe(value => notifier.NotifyOfPropertyChange(propertyName));
         }
@@ -25,9 +25,24 @@ namespace Caliburn.Micro.Reactive.Extensions
 
         public ObservableProperty(INotifyPropertyChangedEx notifier, Expression<Func<TValue>> property) : this(default(TValue), notifier, property) { }
 
-        public IObservable<TValue> Values
+        IDisposable IObservable<TValue>.Subscribe(IObserver<TValue> observer)
         {
-            get { return _values.StartWith(_current); }
+            return _values.Subscribe(observer);
+        }
+
+        void IObserver<TValue>.OnCompleted()
+        {
+            // Do nothing
+        }
+
+        void IObserver<TValue>.OnError(Exception error)
+        {
+            // Do nothing
+        }
+
+        void IObserver<TValue>.OnNext(TValue value)
+        {
+            _values.OnNext(value);
         }
 
         public TValue Get()
