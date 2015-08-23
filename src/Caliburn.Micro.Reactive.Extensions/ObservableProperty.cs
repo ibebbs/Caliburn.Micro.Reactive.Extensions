@@ -5,54 +5,70 @@ using System.Reactive.Subjects;
 
 namespace Caliburn.Micro.Reactive.Extensions
 {
-    public class ObservableProperty<TValue> : IObservable<TValue>, IObserver<TValue>
+    public class ObservableProperty<T> : ISubject<T>, IDisposable
     {
-        private TValue _current;
-        private BehaviorSubject<TValue> _values;
-        private IDisposable _notifySubscription;
+        private readonly Subject<T> _userChanges;
+        private readonly Subject<T> _sourceChanges;
 
-        public ObservableProperty(TValue defaultValue, INotifyPropertyChangedEx notifier, string propertyName)
+        private readonly IObservable<T> _values;
+
+        private IDisposable _propertyChanges;
+        private T _current;
+
+        public ObservableProperty(INotifyPropertyChangedEx propertyNotifier, T defaultValue, string propertyName)
         {
-            _current = defaultValue;
-            _values = new BehaviorSubject<TValue>(defaultValue);
+            _userChanges = new Subject<T>();
+            _sourceChanges = new Subject<T>();
 
-            _notifySubscription = _values.DistinctUntilChanged().Do(value => _current = value).Subscribe(value => notifier.NotifyOfPropertyChange(propertyName));
+            _values = _sourceChanges.Merge(_userChanges).StartWith(defaultValue).Do(value => _current = value).DistinctUntilChanged().Replay(1).RefCount();
+            _propertyChanges = _values.Skip(1).Subscribe(pc => propertyNotifier.NotifyOfPropertyChange(propertyName));
+
+            UserChanges = _userChanges.DistinctUntilChanged();
         }
 
-        public ObservableProperty(INotifyPropertyChangedEx notifier, string propertyName) : this(default(TValue), notifier, propertyName) { }
+        public ObservableProperty(INotifyPropertyChangedEx notifier, T defaultValue, Expression<Func<T>> property) : this(notifier, defaultValue, property.GetMemberInfo().Name) { }
 
-        public ObservableProperty(TValue defaultValue, INotifyPropertyChangedEx notifier, Expression<Func<TValue>> property) : this(defaultValue, notifier, property.GetMemberInfo().Name) { }
+        public ObservableProperty(INotifyPropertyChangedEx notifier, Expression<Func<T>> property) : this(notifier, default(T), property) { }
 
-        public ObservableProperty(INotifyPropertyChangedEx notifier, Expression<Func<TValue>> property) : this(default(TValue), notifier, property) { }
+        public void Dispose()
+        {
+            if (_propertyChanges != null)
+            {
+                _propertyChanges.Dispose();
+                _propertyChanges = null;
+            }
+        }
 
-        IDisposable IObservable<TValue>.Subscribe(IObserver<TValue> observer)
+        public IObservable<T> UserChanges { get; private set; }
+
+        void IObserver<T>.OnCompleted()
+        {
+            // Do nothing
+        }
+
+        void IObserver<T>.OnError(Exception error)
+        {
+            // Do nothing
+        }
+
+        void IObserver<T>.OnNext(T value)
+        {
+            _sourceChanges.OnNext(value);
+        }
+
+        public IDisposable Subscribe(IObserver<T> observer)
         {
             return _values.Subscribe(observer);
         }
 
-        void IObserver<TValue>.OnCompleted()
-        {
-            // Do nothing
-        }
-
-        void IObserver<TValue>.OnError(Exception error)
-        {
-            // Do nothing
-        }
-
-        void IObserver<TValue>.OnNext(TValue value)
-        {
-            _values.OnNext(value);
-        }
-
-        public TValue Get()
+        public T Get()
         {
             return _current;
         }
 
-        public void Set(TValue value)
+        public void Set(T value)
         {
-            _values.OnNext(value);
+            _userChanges.OnNext(value);
         }
     }
 }
