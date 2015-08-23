@@ -10,7 +10,7 @@ let buildDir = "./build/"
 let deployDir = "./deploy/"
  
 // version info
-let version = environVarOrDefault "PackageVersion" "1.0.0.0"  // or retrieve from CI server
+let version = environVarOrDefault "PackageVersion" "1.0.0.0-beta"  // or retrieve from CI server
 let summary = "Open source, portable library from empowering reactive programming with Caliburn Micro"
 let copyright = "Ian Bebbington, 2014"
 let tags = "Caliburn Micro Reactive Rx Observable"
