@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Caliburn.Micro.Reactive.Extensions</id>
+    <version>$version$</version>
+    <title>Caliburn.Micro.Reactive.Extensions</title>
+    <authors>OneCog</authors>
+    <owners>OneCog</owners>
+    <licenseUrl>https://github.com/ibebbs/Caliburn.Micro.Reactive.Extensions/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/ibebbs/Caliburn.Micro.Reactive.Extensions</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/ibebbs/Caliburn.Micro.Reactive.Extensions/master/Logo.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Open source, portable library from empowering reactive programming with Caliburn Micro</description>
+    <copyright>Copyright 2015</copyright>
+    <tags>Caliburn Micro Reactive Rx Observable</tags>
+    @dependencies@
+  </metadata>
+  @files@
+</package>

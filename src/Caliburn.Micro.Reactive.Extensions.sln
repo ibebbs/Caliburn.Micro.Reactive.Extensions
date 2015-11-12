@@ -1,11 +1,22 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Caliburn.Micro.Reactive.Extensions", "Caliburn.Micro.Reactive.Extensions\Caliburn.Micro.Reactive.Extensions.csproj", "{30F988D4-A52A-448A-B9A5-B4AB75E96BD7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Caliburn.Micro.Reactive.Extensions.Example", "Caliburn.Micro.Reactive.Extensions.Example\Caliburn.Micro.Reactive.Extensions.Example.csproj", "{4A699D14-39A6-4CCB-88D7-BBD0E7B88AC7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{0DBE52BF-CE84-455A-A512-C3132E0B932F}"
+	ProjectSection(SolutionItems) = preProject
+		..\build.bat = ..\build.bat
+		..\build.fsx = ..\build.fsx
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{8B37657A-88A8-43DB-80D8-6C22DF3AF793}"
+	ProjectSection(SolutionItems) = preProject
+		..\Caliburn.Micro.Reactive.Extensions.nuspec = ..\Caliburn.Micro.Reactive.Extensions.nuspec
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
