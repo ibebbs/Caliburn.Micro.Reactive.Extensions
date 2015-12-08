@@ -1,45 +1,24 @@
 ﻿using System;
-using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Windows.Input;
 
 namespace Caliburn.Micro.Reactive.Extensions
 {
-    public class ObservableCommand : ICommand, IDisposable, IObservable<object>
+    public class ObservableCommand : ICommand, IObservable<object>, IObserver<bool>
     {
         private Subject<object> _invocations;
-
         private bool _canExecute;
-        private IDisposable _canExecuteSubscription;
 
         public event EventHandler CanExecuteChanged;
 
-        public ObservableCommand(IObservable<bool> canExecute)
+        public ObservableCommand()
         {
             _invocations = new Subject<object>();
-            _canExecuteSubscription = canExecute.DistinctUntilChanged().Subscribe(OnCanExecuteChanged);
         }
-
-        public ObservableCommand() : this(Observable.Return<bool>(true)) { }
 
         IDisposable IObservable<object>.Subscribe(IObserver<object> observer)
         {
             return _invocations.Subscribe(observer);
-        }
-
-        public void Dispose()
-        {
-            if (_canExecuteSubscription != null)
-            {
-                _canExecuteSubscription.Dispose();
-                _canExecuteSubscription = null;
-            }
-
-            if (_invocations != null)
-            {
-                _invocations.Dispose();
-                _invocations = null;
-            }
         }
 
         private void OnCanExecuteChanged(bool canExecute)
@@ -50,6 +29,21 @@ namespace Caliburn.Micro.Reactive.Extensions
             {
                 CanExecuteChanged(this, EventArgs.Empty);
             }
+        }
+
+        void IObserver<bool>.OnCompleted()
+        {
+            throw new NotImplementedException();
+        }
+
+        void IObserver<bool>.OnError(Exception error)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IObserver<bool>.OnNext(bool value)
+        {
+            OnCanExecuteChanged(value);
         }
 
         public bool CanExecute(object parameter)
