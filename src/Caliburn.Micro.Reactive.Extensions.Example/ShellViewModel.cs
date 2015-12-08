@@ -17,16 +17,13 @@ namespace Caliburn.Micro.Reactive.Extensions.Example
             _username = new ObservableProperty<string>(this, () => Username);
             _password = new ObservableProperty<string>(this, () => Password);
 
-            _logInCommand = new ObservableCommand(CanLogIn);
+            _logInCommand = new ObservableCommand();
             _cancelCommand = new ObservableCommand();
+
+            _username.CombineLatest(_password, (username, password) => !string.IsNullOrWhiteSpace(username) && !string.IsNullOrWhiteSpace(password)).Subscribe(_logInCommand);
 
             _logInCommand.Subscribe(ExecuteLogIn);
             _cancelCommand.Subscribe(ExecuteCancel);
-        }
-
-        private IObservable<bool> CanLogIn
-        {
-            get { return _username.CombineLatest(_password, (username, password) => !string.IsNullOrWhiteSpace(username) && !string.IsNullOrWhiteSpace(password)); }
         }
 
         private void ExecuteLogIn(object param)
