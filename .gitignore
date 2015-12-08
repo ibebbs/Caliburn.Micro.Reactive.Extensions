@@ -8,3 +8,8 @@
 *.suo
 /Caliburn.Micro.Reactive.Extensions.Example/bin/Debug
 /Caliburn.Micro.Reactive.Extensions.Example/obj/Debug
+/src/Caliburn.Micro.Reactive.Extensions/bin/Debug
+/src/Caliburn.Micro.Reactive.Extensions/obj/Debug
+/src/Caliburn.Micro.Reactive.Extensions.Example/bin/Debug
+/src/Caliburn.Micro.Reactive.Extensions.Example/obj/Debug
+/src/packages
