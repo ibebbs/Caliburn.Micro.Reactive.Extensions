@@ -33,12 +33,12 @@ namespace Caliburn.Micro.Reactive.Extensions
 
         void IObserver<bool>.OnCompleted()
         {
-            throw new NotImplementedException();
+            // Do nothing
         }
 
         void IObserver<bool>.OnError(Exception error)
         {
-            throw new NotImplementedException();
+            // Do nothing
         }
 
         void IObserver<bool>.OnNext(bool value)
