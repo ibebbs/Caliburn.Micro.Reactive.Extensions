@@ -1,20 +1,16 @@
-using System;
-using System.Collections.Generic;
-using Caliburn.Micro;
+namespace Caliburn.Micro.Reactive.Extensions.Example {
+    using System;
+    using System.Collections.Generic;
+    using Caliburn.Micro;
 
-namespace Caliburn.Micro.Reactive.Extensions.Example 
-{
-    public class AppBootstrapper : BootstrapperBase
-    {
+    public class AppBootstrapper : BootstrapperBase {
         SimpleContainer container;
 
-        public AppBootstrapper() : base()
-        {
-            StartRuntime();
+        public AppBootstrapper() {
+            Initialize();
         }
 
-        protected override void Configure()
-        {
+        protected override void Configure() {
             container = new SimpleContainer();
 
             container.Singleton<IWindowManager, WindowManager>();
@@ -22,28 +18,23 @@ namespace Caliburn.Micro.Reactive.Extensions.Example
             container.PerRequest<IShell, ShellViewModel>();
         }
 
-        protected override object GetInstance(Type service, string key)
-        {
+        protected override object GetInstance(Type service, string key) {
             var instance = container.GetInstance(service, key);
-
             if (instance != null)
                 return instance;
 
             throw new InvalidOperationException("Could not locate any instances.");
         }
 
-        protected override IEnumerable<object> GetAllInstances(Type service)
-        {
+        protected override IEnumerable<object> GetAllInstances(Type service) {
             return container.GetAllInstances(service);
         }
 
-        protected override void BuildUp(object instance)
-        {
+        protected override void BuildUp(object instance) {
             container.BuildUp(instance);
         }
 
-        protected override void OnStartup(object sender, System.Windows.StartupEventArgs e)
-        {
+        protected override void OnStartup(object sender, System.Windows.StartupEventArgs e) {
             DisplayRootViewFor<IShell>();
         }
     }
